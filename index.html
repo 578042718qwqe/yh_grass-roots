@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>基础数据管理系统</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <link href="css/toaster.css" rel="stylesheet">
+    <!--表格注入-->
+    <link rel="stylesheet" href="css/ui-grid.css" type="text/css">
+    <!--导航栏-->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/hds-ace.css" rel="stylesheet">
+    <!--/公用/-->
+    <script type="text/javascript" src="js/angular/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-animate.js"></script>
+    <script type="text/javascript" src="js/moment/moment.min.js"></script>
+    <script src="js/cookies/angular-cookies.js"></script>
+    <script src="js/cookies/jquery.cookie.min.js"></script>
+    <script type="text/javascript" src="js/path.js"></script>
+    <!--表格注入-->
+    <script src="js/ui-grid-angular/csv.js"></script>
+    <script src="js/ui-grid-angular/pdfmake.js"></script>
+    <script src="js/ui-grid-angular/vfs_fonts.js"></script>
+    <script src="js/ui-grid-angular/lodash.min.js"></script>
+    <script src="js/ui-grid-angular/jszip.min.js"></script>
+    <script src="js/ui-grid-angular/excel-builder.dist.js"></script>
+    <script src="js/ui-grid-angular/ui-grid.js"></script>
+    <script src="js/angular-http-support/http-support.js"></script>
+    <!--自定义-->
+    <script src="js/toaster/toaster.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/reportbase.js"></script>
+    <script src="js/sweetalert/sweetalert.min.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/ui-bootstrap/angular-animate.min.js"></script>
+    <script src="js/ui-bootstrap/angular-sanitize.js"></script>
+    <script src="js/ui-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="js/ui-bootstrap/jquery-ui.min.js"></script>
+    <script src="js/ui-bootstrap/sortable.js"></script>
+    <!--/用户管理/-->
+    <script type="text/javascript" src="modules/system/useredit.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/user.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/role.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/hosp.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/comp.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/module.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/system/logger.js" language="javascript"></script>
+    <!-- 维护数据 -->
+    <script type="text/javascript" src="modules/maintenance/base_region.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_dept.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_common.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_form.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_form_usage.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_ins_type.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_vaccine.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_diagnose.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_hormone.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_med_usage.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/basic_usage_freq.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_operation.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_med_record.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_palpate.js" language="javascript"></script>
+    <script type="text/javascript" src="modules/maintenance/dic_public_health.js" language="javascript"></script>
+</head>
+<body class="full-height-layout" ng-app="routerApp" style="overflow:hidden;">
+<div style="width: 100%; height: 100%;">
+    <!--顶部-S-->
+    <div class="header-box" id="headerBox">
+        <!--logo-S-->
+        <span class="logo-box"><img id="littlelogoImg" data-ng-src="images/newHDS.png" alt=""></span>
+        <!--logo-E-->
+        <!--导航左侧-S-->
+        <div class="nav-box" ng-controller="dh_tab">
+            <ul>
+                <li ng-repeat="data in shezhi" ng-class="{'{{data.name}}': 'dh_right', 'name_l': 'inactive'}[isActive]" ng-mouseenter="showtimes = true" ng-mouseleave="showtimes = false" ng-class="{'on':showtimes}">
+                    <!--主菜单-S-->
+                    <div class="main-nav">
+                        <em><img data-ng-src="{{data.img}}"></em>
+                        <span>{{data.name}}</span>
+                        <i class="nav-down-arrow"></i>
+                    </div>
+                    <!--主菜单-E-->
+                    <!--子菜单-S-->
+                    <div id="submenuNavBox1" class="submenu-nav-box" ng-mouseenter="showtimes = true" ng-mouseleave="showtimes = false" ng-class="{'on':showtimes}">
+                        <div class="submenu-nav-content" ng-repeat="datatwo in data.child" >
+                            <h3><img data-ng-src="{{datatwo.img}}">{{datatwo.name}}</h3>
+                            <span class="J_menuItem" href="html/button.html"   ng-repeat="datatree in datatwo.child" ui-sref="{{datatree.url}}" ng-click="dh_show(datatree.name,datatree.url,$event)">
+                                {{datatree.name}}
+                            </span>
+                        </div>
+                    </div>
+                    <!--子菜单-E-->
+                </li>
+            </ul>
+        </div>
+        <!--导航左侧-E-->
+        <!--导航右侧-S-->
+        <div class="nav-right-box" ng-controller="dh_tab_right">
+            <ul>
+                <li>
+                    <span class="nav-right-txt backhome"><a href="#/">主页</a></span>
+                </li>
+                <li class="nav-set" ng-mouseenter="navset($index,$event)" style="width:80px; height: 40px; line-height: 40px;">
+                    <div class="set-icon" style="margin-left:13px;"><img src="images/img/set.png"></div>
+                    <!--子菜单-S-->
+                    <div id="submenuBox" class="submenu-box tab-change" style="min-height: 115px;" ng-repeat="data in guanli">
+                        <!--标题块-S-->
+                        <div id="submenuTit" class="submenu-tit tab-nav-tit clearfix">
+                            <div ng-repeat="datatwo in data.child">
+                                <span ng-mouseenter="dj($index,$event)">{{datatwo.name}}</span>
+                            </div>
+                        </div>
+                        <!--标题块-E-->
+                        <!--内容块-S-->
+                        <div id="submenuCongtentBox" class="submenu-congtent-box tab-nav-box" style="min-height: 95px; width:725px;">
+                            <div class="submenu-congtent tab-nav clearfix" ng-repeat="datatwo in data.child">
+                                <span class="J_menuItem" ui-sref="{{datatree.url}}" ng-repeat="datatree in datatwo.child" ng-click="dh_show2(datatree.name,datatree.url)">{{datatree.name}}</span>
+                            </div>
+                        </div>
+                        <!--内容块-E-->
+                    </div>
+                    <!--子菜单-E-->
+                </li>
+                <li class="drop-down">
+                    <div class="drop-down-title">
+                        <span class="nav-right-txt userName">用户:{{admin.admin}}</span>
+                        <em class="nav-down-arrow"></em>
+                    </div>
+                    <div class="drop-down-box">
+                        <a href="javascript:;" id="editPassword">修改密码</a>
+                        <a href="javascript:;" ng-click="logout()">退出</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--导航右侧-E-->
+    </div>
+    <!--顶部-E-->
+    <!--view布局-->
+    <div ui-view style="height: 100%;" class="inner"></div>
+</div>
+</body>
+</html>

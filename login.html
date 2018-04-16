@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>系统登录页面</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/base.css" rel="stylesheet">
+    <script type="text/javascript" src="js/angular/jquery.min.js"></script>
+    <script type="text/javascript" src="js/angular/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-ui-router.min.js"></script>
+    <script type="text/javascript" src="js/angular/angular-animate.js"></script>
+     <script type="text/javascript" src="js/angular-http-support/http-support.js"></script>
+    <script src="js/cookies/angular-cookies.js"></script>
+    <script src="js/cookies/jquery.cookie.min.js"></script>
+     <!--提示弹框-->
+     <script src="js/sweetalert/sweetalert.min.js"></script>
+</head>
+<body ng-app="login" style="background-color:#cccccc5e;">
+<div class="login-w">
+    <div class="login-w-l">
+        <div class="login-w-l-word">
+            基层云服务平台
+            <img src="images/login-icon.png">
+        </div>
+    </div>
+    <div class="login-w-r">
+        <div class="login" ng-controller="loginadmin">
+            <div class="login_head"><img src="images/newHDS.png"></div>
+            <h3>用户登录</h3>
+            <form>
+                <div class="container" style="width:85%;">
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="ace-icon glyphicon glyphicon-user"></i></span>
+                        <input type="text" class="form-control"  placeholder="请输入用户名" ng-model="use.name" required maxlength="12">
+                    </div>
+                    <div class="input-group form-group">
+                        <span class="input-group-addon"><i class="ace-icon glyphicon glyphicon-lock"></i></span>
+                        <input  type="password" placeholder="请输入密码" ng-model="use.password" class="form-control" required maxlength="10">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" ng-click="loginBtn()" ng-disabled="!use.name || !use.password">登  录</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="login-w-foot">
+        <div class="login-foot">
+            Copyright © 2013-2017 Yinghai Software Co., Ltd, Technology Support<br>
+            鹰海医疗信息技术有限公司 技术支持
+        </div>
+    </div>
+</div>
+
+<script>
+    //账号admin 密码admin
+    var app = angular.module('login', ['ui.router','ngCookies']);
+    app.controller('loginadmin', function($scope,$state,$log,$cookieStore,$http) {
+        $scope.use ={};
+        //------------------------------------------------------------------//
+        $("#siteSelect").change(function(){
+            $scope.use.region =$(this).val();
+        });
+        $scope.data =[
+            {"region":"选择地区"},
+            {"region":"海南"},
+            {"region":"青岛"}
+        ];
+        $scope.loginBtn =function () {
+        	var userName = $scope.use.name;
+            var pass = $scope.use.password;
+            
+          //要通过post传递的参数
+            var data = {
+            		userCode: userName, 
+            		userPassWord: pass
+            },
+            //post请求的地址
+            url = "management/login",
+            //将参数传递的方式改成form
+            postCfg = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                transformRequest: function (data) {
+                    return $.param(data);
+                }
+            };
+          //发送post请求，获取数据
+            $http.post(url, data, postCfg)
+                .success(function (response) {
+                	if(response.status == 1){
+                	    console.log(response.obj.uid,"ID");
+                	    console.log(response.obj.roles,"角色");
+                        $cookieStore.put("uid", {name:response.obj.uid});
+                        $cookieStore.put("roles", {name:response.obj.roles});
+                        $cookieStore.put("admin",{admin:$scope.use.name});
+                        $.cookie('region', $scope.use.region);
+                        location.href="index.html";
+                	}else{
+                        swal(response.message);
+                		// alert(response.message)
+                	}
+                	
+                     console.log(response);
+                });
+        };
+    });
+</script>
+</body>
+</html>
